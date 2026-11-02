@@ -1,140 +1,196 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PhysicsVision | AI Physics Visualisation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PhysicsVision</title>
 <style>
-* { box-sizing: border-box; }
-
+* { box-sizing:border-box; }
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0b1120;
-  color: #f1f5f9;
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#0b1120;
+  color:#f1f5f9;
 }
-
 header {
-  padding: 22px;
-  border-bottom: 1px solid #263449;
-  text-align: center;
+  text-align:center;
+  padding:22px;
+  background:#111c30;
+  border-bottom:1px solid #334155;
 }
-
-h1 {
-  color: #38bdf8;
-  margin-bottom: 8px;
-}
-
-header p { color: #94a3b8; }
-
-main {
-  max-width: 850px;
-  margin: 35px auto;
-  padding: 20px;
-}
-
+h1 { color:#38bdf8; margin:0; }
+main { max-width:900px; margin:25px auto; padding:16px; }
 .panel {
-  background: #172338;
-  padding: 24px;
-  border-radius: 14px;
-  border: 1px solid #334155;
+  background:#172338;
+  border:1px solid #334155;
+  border-radius:14px;
+  padding:20px;
+  margin-bottom:18px;
 }
-
-textarea {
-  width: 100%;
-  min-height: 140px;
-  padding: 15px;
-  border-radius: 9px;
-  border: 1px solid #475569;
-  background: #0f172a;
-  color: white;
-  font-size: 16px;
-  resize: vertical;
+h2 { color:#38bdf8; }
+svg {
+  width:100%;
+  background:#f8fafc;
+  border-radius:10px;
 }
-
-button {
-  background: #0284c7;
-  color: white;
-  border: none;
-  padding: 13px 22px;
-  margin-top: 15px;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
+input { width:100%; accent-color:#38bdf8; }
+.controls {
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:12px;
+  align-items:center;
 }
-
-button:hover { background: #0369a1; }
-
-#output {
-  margin-top: 25px;
-  padding: 20px;
-  background: #0f172a;
-  border-radius: 10px;
-  min-height: 100px;
-}
-
-footer {
-  text-align: center;
-  color: #64748b;
-  padding: 25px;
-}
+.value { color:#38bdf8; font-size:22px; }
+.legend { line-height:2; }
+footer { text-align:center; color:#94a3b8; padding:25px; }
 </style>
 </head>
 
 <body>
-
 <header>
-  <h1>PhysicsVision</h1>
-  <p>AI-Powered Physics Visualisation Platform</p>
+<h1>PhysicsVision</h1>
+<p>AI-Powered Physics Visualisation Platform</p>
 </header>
 
 <main>
-  <div class="panel">
-    <h2>Physics Question Visualiser</h2>
-    <p>Enter a Physics question to begin.</p>
 
-    <textarea id="question"
-    placeholder="Example: A block slides down a frictionless inclined plane. Visualise the forces acting on it."></textarea>
+<div class="panel">
+<h2>Interactive Physics Laboratory</h2>
+<h3>Block on an Inclined Plane</h3>
+<p>Explore the forces acting on a block on a frictionless inclined plane.</p>
 
-    <button onclick="visualise()">Visualise Question</button>
+<svg id="diagram" viewBox="0 0 600 450">
+<defs>
+<marker id="red" markerWidth="8" markerHeight="8"
+refX="6" refY="3" orient="auto">
+<path d="M0,0 L6,3 L0,6" fill="none" stroke="#dc2626" stroke-width="1.5"/>
+</marker>
+<marker id="blue" markerWidth="8" markerHeight="8"
+refX="6" refY="3" orient="auto">
+<path d="M0,0 L6,3 L0,6" fill="none" stroke="#2563eb" stroke-width="1.5"/>
+</marker>
+<marker id="green" markerWidth="8" markerHeight="8"
+refX="6" refY="3" orient="auto">
+<path d="M0,0 L6,3 L0,6" fill="none" stroke="#16a34a" stroke-width="1.5"/>
+</marker>
+</defs>
 
-    <div id="output">
-      Your Physics visualisation will appear here.
-    </div>
-  </div>
+<g transform="rotate(-30 280 320)">
+<line x1="40" y1="350" x2="550" y2="350"
+stroke="#334155" stroke-width="8"/>
+<rect x="250" y="260" width="60" height="60"
+fill="#38bdf8" stroke="#075985" stroke-width="3"/>
+</g>
+
+<g id="forces"></g>
+<text x="280" y="410" fill="#334155"
+text-anchor="middle" font-size="15">Inclined plane</text>
+</svg>
+
+<div class="controls">
+<div>
+<label for="angle">Inclination angle (θ)</label>
+<input id="angle" type="range" min="10" max="60"
+value="30" oninput="updateDiagram()">
+</div>
+<div class="value" id="angleValue">30°</div>
+</div>
+</div>
+
+<div class="panel">
+<h2>Physics Calculations</h2>
+<p>Mass: 2 kg</p>
+<p id="gravity"></p>
+<p id="parallel"></p>
+<p id="perpendicular"></p>
+<p id="normal"></p>
+</div>
+
+<div class="panel">
+<h2>Force Legend</h2>
+<div class="legend">
+🔴 Weight (mg)<br>
+🔵 Normal force (N)<br>
+🟢 Components of gravitational force
+</div>
+</div>
+
 </main>
 
-<footer>
-  PhysicsVision | Learn Physics Visually
-</footer>
+<footer>PhysicsVision | Visualise Physics</footer>
 
 <script>
-function visualise() {
-  const question = document.getElementById("question").value.trim();
-  const output = document.getElementById("output");
+const mass = 2;
+const g = 9.8;
 
-  if (!question) {
-    output.textContent = "Please enter a Physics question.";
-    return;
+function updateDiagram() {
+  const angle = Number(document.getElementById("angle").value);
+  const rad = angle * Math.PI / 180;
+
+  document.getElementById("angleValue").textContent = angle + "°";
+
+  const mg = mass * g;
+  const parallel = mg * Math.sin(rad);
+  const perpendicular = mg * Math.cos(rad);
+
+  document.getElementById("gravity").textContent =
+    "Weight (mg) = " + mg.toFixed(2) + " N";
+
+  document.getElementById("parallel").textContent =
+    "Down the plane (mg sin θ) = " + parallel.toFixed(2) + " N";
+
+  document.getElementById("perpendicular").textContent =
+    "Into the plane (mg cos θ) = " + perpendicular.toFixed(2) + " N";
+
+  document.getElementById("normal").textContent =
+    "Normal force (N) = " + perpendicular.toFixed(2) + " N";
+
+  const cx = 280 + 30 * Math.sin(rad);
+  const cy = 350 - 30 * Math.cos(rad);
+
+  const scale = 5;
+
+  function vector(dx,dy,color,label,marker) {
+    return `
+      <line x1="${cx}" y1="${cy}"
+      x2="${cx+dx}" y2="${cy+dy}"
+      stroke="${color}" stroke-width="3"
+      marker-end="url(#${marker})"/>
+      <text x="${cx+dx+8}" y="${cy+dy-8}"
+      fill="${color}" font-size="17"
+      font-weight="bold">${label}</text>
+    `;
   }
 
-  output.innerHTML = `
-    <h3>Question received!</h3>
-    <p>${escapeHTML(question)}</p>
-    <p>PhysicsVision is ready for its AI and diagram-generation modules.</p>
-    <p>2D and 3D visualisation modules will be added in the next stages.</p>
-  `;
+  const gravityVector = vector(
+    0, mg*scale, "#dc2626", "mg", "red"
+  );
+
+  const normalVector = vector(
+    -perpendicular*scale*Math.sin(rad),
+    -perpendicular*scale*Math.cos(rad),
+    "#2563eb", "N", "blue"
+  );
+
+  const parallelVector = vector(
+    -parallel*scale*Math.cos(rad),
+    parallel*scale*Math.sin(rad),
+    "#16a34a", "mg sin θ", "green"
+  );
+
+  const perpendicularVector = vector(
+    perpendicular*scale*Math.sin(rad),
+    perpendicular*scale*Math.cos(rad),
+    "#16a34a", "mg cos θ", "green"
+  );
+
+  document.getElementById("forces").innerHTML =
+    gravityVector + normalVector +
+    parallelVector + perpendicularVector;
 }
 
-function escapeHTML(text) {
-  return text.replace(/[&<>"']/g, char => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
-  })[char]);
-}
+updateDiagram();
 </script>
 
 </body>
