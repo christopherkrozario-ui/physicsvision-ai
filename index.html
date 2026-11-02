@@ -75,7 +75,7 @@ refX="6" refY="3" orient="auto">
 </marker>
 </defs>
 
-<g transform="rotate(-30 280 320)">
+<g id="incline" transform="rotate(-30 280 320)">
 <line x1="40" y1="350" x2="550" y2="350"
 stroke="#334155" stroke-width="8"/>
 <rect x="250" y="260" width="60" height="60"
@@ -126,6 +126,9 @@ const g = 9.8;
 function updateDiagram() {
   const angle = Number(document.getElementById("angle").value);
   const rad = angle * Math.PI / 180;
+  document.getElementById("incline")
+  .setAttribute("transform",
+  `rotate(${-angle} 280 320)`);
 
   document.getElementById("angleValue").textContent = angle + "°";
 
