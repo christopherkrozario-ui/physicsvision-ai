@@ -1,1 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PhysicsVision | AI Physics Visualisation</title>
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0b1120;
+  color: #f1f5f9;
+}
+
+header {
+  padding: 22px;
+  border-bottom: 1px solid #263449;
+  text-align: center;
+}
+
+h1 {
+  color: #38bdf8;
+  margin-bottom: 8px;
+}
+
+header p { color: #94a3b8; }
+
+main {
+  max-width: 850px;
+  margin: 35px auto;
+  padding: 20px;
+}
+
+.panel {
+  background: #172338;
+  padding: 24px;
+  border-radius: 14px;
+  border: 1px solid #334155;
+}
+
+textarea {
+  width: 100%;
+  min-height: 140px;
+  padding: 15px;
+  border-radius: 9px;
+  border: 1px solid #475569;
+  background: #0f172a;
+  color: white;
+  font-size: 16px;
+  resize: vertical;
+}
+
+button {
+  background: #0284c7;
+  color: white;
+  border: none;
+  padding: 13px 22px;
+  margin-top: 15px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover { background: #0369a1; }
+
+#output {
+  margin-top: 25px;
+  padding: 20px;
+  background: #0f172a;
+  border-radius: 10px;
+  min-height: 100px;
+}
+
+footer {
+  text-align: center;
+  color: #64748b;
+  padding: 25px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>PhysicsVision</h1>
+  <p>AI-Powered Physics Visualisation Platform</p>
+</header>
+
+<main>
+  <div class="panel">
+    <h2>Physics Question Visualiser</h2>
+    <p>Enter a Physics question to begin.</p>
+
+    <textarea id="question"
+    placeholder="Example: A block slides down a frictionless inclined plane. Visualise the forces acting on it."></textarea>
+
+    <button onclick="visualise()">Visualise Question</button>
+
+    <div id="output">
+      Your Physics visualisation will appear here.
+    </div>
+  </div>
+</main>
+
+<footer>
+  PhysicsVision | Learn Physics Visually
+</footer>
+
+<script>
+function visualise() {
+  const question = document.getElementById("question").value.trim();
+  const output = document.getElementById("output");
+
+  if (!question) {
+    output.textContent = "Please enter a Physics question.";
+    return;
+  }
+
+  output.innerHTML = `
+    <h3>Question received!</h3>
+    <p>${escapeHTML(question)}</p>
+    <p>PhysicsVision is ready for its AI and diagram-generation modules.</p>
+    <p>2D and 3D visualisation modules will be added in the next stages.</p>
+  `;
+}
+
+function escapeHTML(text) {
+  return text.replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[char]);
+}
+</script>
+
+</body>
+</html>
 
